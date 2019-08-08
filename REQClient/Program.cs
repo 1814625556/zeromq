@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ZeroMQ;
 
@@ -12,8 +13,12 @@ namespace REQClient
         static void Main(string[] args)
         {
             HWClient(args);
+            Console.ReadKey();
         }
-
+        /// <summary>
+        /// 简单模式
+        /// </summary>
+        /// <param name="args"></param>
         public static void HWClient(string[] args)
         {
             //
@@ -44,6 +49,7 @@ namespace REQClient
 
                 for (int n = 0; n < 10; ++n)
                 {
+                    Thread.Sleep(1000);
                     string requestText = "Hello";
                     Console.Write("Sending {0}…", requestText);
 
@@ -55,6 +61,31 @@ namespace REQClient
                     {
                         Console.WriteLine(" Received: {0} {1}!", requestText, reply.ReadString());
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 代理模式
+        /// </summary>
+        /// <param name="args"></param>
+        public static void RRClient(string[] args)
+        {
+            // Socket to talk to server
+            using (var context = new ZContext())
+            using (var requester = new ZSocket(context, ZSocketType.REQ))
+            {
+                requester.Connect("tcp://127.0.0.1:5559");
+
+                for (int n = 0; n < 10; ++n)
+                {
+                    requester.Send(new ZFrame($"Hello{n}"));
+
+                    using (ZFrame reply = requester.ReceiveFrame())
+                    {
+                        Console.WriteLine("Hello {0}!", reply.ReadString());
+                    }
+                    Thread.Sleep(1000);
                 }
             }
         }
