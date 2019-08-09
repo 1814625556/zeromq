@@ -12,7 +12,7 @@ namespace PubServer
     {
         static void Main(string[] args)
         {
-            WUServer(args);
+            PSEnvPub(args);
         }
 
         public static void WUServer(string[] args)
@@ -39,7 +39,7 @@ namespace PubServer
             }
         }
 
-        //zframe格式，发送消息
+        //zframe格式，发送消息--可以过滤
         public static void PSEnvPub(string[] args)
         {
             //
@@ -63,7 +63,7 @@ namespace PubServer
                     using (var message = new ZMessage())
                     {
                         published++;
-                        message.Add(new ZFrame(string.Format("A {0}", published)));
+                        message.Add(new ZFrame($"A {published}"));
                         message.Add(new ZFrame(string.Format(" We don't like to see this.")));
                         Thread.Sleep(1000);
 
@@ -73,7 +73,7 @@ namespace PubServer
                     using (var message = new ZMessage())
                     {
                         published++;
-                        message.Add(new ZFrame(string.Format("B {0}", published)));
+                        message.Add(new ZFrame($"B {published}"));
                         message.Add(new ZFrame(string.Format(" We do like to see this.")));
                         Thread.Sleep(1000);
 

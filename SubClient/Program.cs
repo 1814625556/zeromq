@@ -11,7 +11,7 @@ namespace SubClient
     {
         static void Main(string[] args)
         {
-            WUClient(args);
+            PSEnvSub(args);
         }
 
         public static void WUClient(string[] args)
@@ -57,6 +57,41 @@ namespace SubClient
                     }
                 }
                 Console.WriteLine("Average temperature for zipcode '{0}' was {1}°", zipCode, (total_temperature / i));
+            }
+        }
+
+        //消息订阅者，对应发布者过滤消息
+        public static void PSEnvSub(string[] args)
+        {
+            //
+            // Pubsub envelope subscriber
+            //
+            // Author: metadings
+            //
+
+            // Prepare our context and subscriber
+            using (var context = new ZContext())
+            using (var subscriber = new ZSocket(context, ZSocketType.SUB))
+            {
+                subscriber.Connect("tcp://127.0.0.1:5563");
+                subscriber.Subscribe("A");
+
+                int subscribed = 0;
+                while (true)
+                {
+                    using (ZMessage message = subscriber.ReceiveMessage())
+                    {
+                        subscribed++;
+
+                        // Read envelope with address
+                        string address = message[0].ReadString();
+
+                        // Read message contents
+                        string contents = message[1].ReadString();
+
+                        Console.WriteLine($"address:{address},contents:{contents}");
+                    }
+                }
             }
         }
 
