@@ -12,7 +12,8 @@ namespace REQClient
     {
         static void Main(string[] args)
         {
-            HWClient(args);
+            //HWClient(args);
+            RTTest.RTDealer(args);
             Console.ReadKey();
         }
         /// <summary>
