@@ -12,7 +12,7 @@ namespace REPServe
     {
         static void Main(string[] args)
         {
-            MTServer(args);
+            HwServer(args);
         }
         /// <summary>
         /// 这是基础模式
@@ -37,7 +37,9 @@ namespace REPServe
             using (var responder = new ZSocket(context, ZSocketType.REP))
             {
                 // Bind
-                responder.Bind("tcp://*:5555");
+                responder.Bind("tcp://127.0.0.1:5555");
+
+                //responder.Send(new ZFrame("chenchang"));//这里会报错，因为req套接字只能先receive才能发送
 
                 while (true)
                 {

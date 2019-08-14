@@ -13,7 +13,7 @@ namespace REQClient
         static void Main(string[] args)
         {
             //HWClient(args);
-            RTTest.RTDealer(args);
+            //RTTest.RTDealer(args);
             Console.ReadKey();
         }
         /// <summary>
@@ -61,6 +61,59 @@ namespace REQClient
                     using (ZFrame reply = requester.ReceiveFrame())
                     {
                         Console.WriteLine(" Received: {0} {1}!", requestText, reply.ReadString());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// dealer
+        /// </summary>
+        /// <param name="args"></param>
+        public static void HWDealer(string[] args)
+        {
+            //
+            // Hello World client
+            //
+            // Author: metadings
+            //
+
+            if (args == null || args.Length < 1)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Usage: ./{0} HWClient [Endpoint]", AppDomain.CurrentDomain.FriendlyName);
+                Console.WriteLine();
+                Console.WriteLine("    Endpoint  Where HWClient should connect to.");
+                Console.WriteLine("              Default is tcp://127.0.0.1:5555");
+                Console.WriteLine();
+                args = new string[] { "tcp://127.0.0.1:5555" };
+            }
+
+            string endpoint = args[0];
+
+            // Create
+            using (var context = new ZContext())
+            using (var requester = new ZSocket(context, ZSocketType.DEALER))
+            {
+                // Connect
+                requester.Connect(endpoint);
+
+                for (int n = 0; n < 10; ++n)
+                {
+                    Thread.Sleep(100);
+                    string requestText = "Hello";
+                    Console.WriteLine("Sending {0}…", requestText);
+                    // Send
+                    requester.Send(new ZFrame(n));
+                    requester.Send(new ZFrame());
+                    requester.Send(new ZFrame(requestText));
+                }
+                for (var i = 0; i < 10; i++)
+                {
+                    // Receive
+                    using (var reply = requester.ReceiveMessage())
+                    {
+                        Console.WriteLine(" Received: {0} {1}!", "Hello", reply.ToString());
                     }
                 }
             }

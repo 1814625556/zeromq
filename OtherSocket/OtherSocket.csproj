@@ -47,10 +47,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DealerRouterTest.cs" />
     <Compile Include="HandlerException.cs" />
     <Compile Include="MTRelay.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyRouterRouter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -47,8 +47,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dealer-REP.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Router-Dealer.cs" />
+    <Compile Include="Router-Req.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
