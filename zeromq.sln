@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtherSocket", "OtherSocket\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ctest", "Ctest\Ctest.csproj", "{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReqRepDemo", "ReqRepDemo\ReqRepDemo.csproj", "{3D73CC47-8258-4A2E-A62D-794AD0D74CC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D73CC47-8258-4A2E-A62D-794AD0D74CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D73CC47-8258-4A2E-A62D-794AD0D74CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D73CC47-8258-4A2E-A62D-794AD0D74CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D73CC47-8258-4A2E-A62D-794AD0D74CC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,4 +88,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EC619B74-C5CD-44A0-94DB-73AD7829224D}
 	EndGlobalSection
-EndGlobal
+	EndGlobal
