@@ -74,5 +74,43 @@ namespace ReqRepDemo
                 }
             }
         }
+
+        /// <summary>
+        /// 一次发送多条消息,这种情况仍然会被接收到
+        /// </summary>
+        /// <param name="args"></param>
+        public static void HwServer2(ZContext context)
+        {
+            // Create
+            using (var responder = new ZSocket(context, ZSocketType.REP))
+            {
+                // Bind
+                responder.Bind("tcp://127.0.0.1:5555");
+
+                //responder.Send(new ZFrame("chenchang"));//这里会报错，因为req套接字只能先receive才能发送
+
+                while (true)
+                {
+                    // Receive
+                    using (var request = responder.ReceiveMessage())
+                    {
+                        Console.WriteLine("==================HwServer2 receive==================");
+                        for (var i = 0; i < request.Count; i++)
+                        {
+                            Console.WriteLine($"{i}:{request[i].ReadString()}");
+                        }
+                        Console.WriteLine("==================HwServer2 receive==================");
+                        // Do some work
+                        Thread.Sleep(1);
+
+                        // Send
+                        responder.SendMore(new ZFrame("chenchang "));
+                        responder.SendMore(new ZFrame("is a "));
+                        responder.SendMore(new ZFrame("good "));
+                        responder.Send(new ZFrame("man . "));
+                    }
+                }
+            }
+        }
     }
 }

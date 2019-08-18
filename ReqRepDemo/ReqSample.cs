@@ -73,32 +73,98 @@ namespace ReqRepDemo
             }
         }
 
-        // Basic request-reply client using REQ socket
-        public static void LBBroker_Client(ZContext context, int i)
+        /// <summary>
+        /// 针对 router模式--设置identity
+        /// </summary>
+        /// <param name="context"></param>
+        public static void HwClient2(ZContext context)
         {
-            // Create a socket
-            using (var client = new ZSocket(context, ZSocketType.REQ))
+            var endpoint = "tcp://127.0.0.1:5555";
+            using (var requester = new ZSocket(context, ZSocketType.REQ))
             {
-                // Set a printable identity
-                client.IdentityString = "CLIENT" + i;
-
                 // Connect
-                client.Connect("inproc://frontend");
+                requester.IdentityString = "Client2";
+                requester.Connect(endpoint);
 
-                using (var request = new ZMessage())
+                for (int n = 0; n < 10; ++n)
                 {
-                    request.Add(new ZFrame("Hello"));
+                    Thread.Sleep(1000);
+                    var requestText = "Hello";
 
-                    // Send request
-                    client.Send(request);
-                }
+                    // Send
+                    requester.Send(new ZFrame(requestText));
 
-                // Receive reply
-                using (ZMessage reply = client.ReceiveMessage())
-                {
-                    Console.WriteLine("CLIENT{0}: {1}", i, reply[0].ReadString());
+                    // Receive
+                    using (var reply = requester.ReceiveMessage())
+                    {
+                        Console.WriteLine("==================HwClient1 receive==================");
+                        for (var i = 0; i < reply.Count; i++)
+                        {
+                            Console.WriteLine($"{i}:{reply[i].ReadString()}");
+                        }
+                        Console.WriteLine("==================HwClient1 receive==================");
+                    }
                 }
             }
         }
+
+        /// <summary>
+        /// 发送多帧消息
+        /// </summary>
+        /// <param name="context"></param>
+        public static void HwClient3(ZContext context)
+        {
+            var endpoint = "tcp://127.0.0.1:5555";
+            using (var requester = new ZSocket(context, ZSocketType.REQ))
+            {
+                // Connect
+                requester.Connect(endpoint);
+
+                for (int n = 0; n < 10; ++n)
+                {
+                    Thread.Sleep(1000);
+                    var requestText = "Hello";
+
+                    // Send
+                    requester.SendMore(new ZFrame("cc "));
+                    requester.Send(new ZFrame(requestText));
+
+                    // Receive
+                    using (var reply = requester.ReceiveMessage())
+                    {
+                        Console.WriteLine("==================HwClient3 receive==================");
+                        for (var i = 0; i < reply.Count; i++)
+                        {
+                            Console.WriteLine($"{i}:{reply[i].ReadString()}");
+                        }
+                        Console.WriteLine("==================HwClient3 receive==================");
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 这是错误的不能先接收信息--只要运行 必然报错
+        /// </summary>
+        /// <param name="context"></param>
+        public static void HwClient4(ZContext context)
+        {
+            var endpoint = "tcp://127.0.0.1:5555";
+            using (var requester = new ZSocket(context, ZSocketType.REQ))
+            {
+                requester.Connect(endpoint);
+                using (var reply = requester.ReceiveMessage())
+                {
+                    Console.WriteLine("==================HwClient1 receive==================");
+                    for (var i = 0; i < reply.Count; i++)
+                    {
+                        Console.WriteLine($"{i}:{reply[i].ReadString()}");
+                    }
+                    Console.WriteLine("==================HwClient1 receive==================");
+                }
+            }
+        }
+
     }
 }

@@ -10,49 +10,38 @@ namespace ReqRepDemo
 {
     public class RouterSample
     {
-        public static void AsyncSrv_ServerWorker(ZContext context, int i)
+        /// <summary>
+        /// 这是测试多帧的时候用到的
+        /// </summary>
+        /// <param name="context"></param>
+        public static void HwServer1(ZContext context)
         {
-            using (var worker = new ZSocket(context, ZSocketType.DEALER))
+            // Create
+            using (var responder = new ZSocket(context, ZSocketType.ROUTER))
             {
-                worker.Connect("inproc://backend");
-
-                var rnd = new Random();
+                // Bind
+                responder.Bind("tcp://127.0.0.1:5555");
 
                 while (true)
                 {
-                    ZMessage request;
-                    if (null == (request = worker.ReceiveMessage(out var error)))
+                    // Receive
+                    using (var request = responder.ReceiveMessage())
                     {
-                        if (error == ZError.ETERM)
-                            return;    // Interrupted
-                        throw new ZException(error);
-                    }
-                    using (request)
-                    {
-                        // The DEALER socket gives us the reply envelope and message
-                        var identity = request[1].ReadString();
-                        var content = request[2].ReadString();
-
-                        // Send 0..4 replies back
-                        int replies = rnd.Next(5)+1;
-                        for (int reply = 0; reply < replies; ++reply)
+                        Console.WriteLine("==================HwServer1 receive==================");
+                        var indentity = request[0].ReadString();
+                        Console.WriteLine($"0:{indentity}");
+                        for (var i = 1; i < request.Count; i++)
                         {
-                            // Sleep for some fraction of a second
-                            Thread.Sleep(rnd.Next(1000) + 1);
-
-                            using (var response = new ZMessage())
-                            {
-                                response.Add(new ZFrame(identity));
-                                response.Add(new ZFrame(content));
-
-                                if (!worker.Send(response, out error))
-                                {
-                                    if (error == ZError.ETERM)
-                                        return;    // Interrupted
-                                    throw new ZException(error);
-                                }
-                            }
+                            Console.WriteLine($"{i}:{request[i].ReadString()}");
                         }
+                        Console.WriteLine("==================HwServer1 receive==================");
+                        // Do some work
+                        Thread.Sleep(1);
+
+                        // Send
+                        responder.SendMore(new ZFrame("Client2"));
+                        responder.SendMore(new ZFrame());
+                        responder.Send(new ZFrame("World"));
                     }
                 }
             }

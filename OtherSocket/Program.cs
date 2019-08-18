@@ -10,9 +10,11 @@ namespace OtherSocket
     {
         static void Main(string[] args)
         {
-            DealerToDealer.Test();
-            //DealerRouterWorker.AsyncSrv();
-            //MTRelayClass.MTRelay(args);
+            if (args.Length == 0)
+            {
+                args = new string[] {"5000", "5001", "5002"};
+            }
+            StateModel.Peering1(args);
             Console.ReadKey(true);
         }
     }

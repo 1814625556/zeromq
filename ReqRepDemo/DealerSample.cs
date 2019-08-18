@@ -10,50 +10,36 @@ namespace ReqRepDemo
 {
     public class DealerSample
     {
-        public static void AsyncSrv_Client(ZContext context, int i)
+        /// <summary>
+        /// 这是多贞message模式
+        /// </summary>
+        /// <param name="context"></param>
+        public static void HwClient1(ZContext context)
         {
-            using (var client = new ZSocket(context, ZSocketType.DEALER))
+            var endpoint = "tcp://127.0.0.1:5555";
+            using (var requester = new ZSocket(context, ZSocketType.DEALER))
             {
-                // Set identity to make tracing easier
-                client.Identity = Encoding.UTF8.GetBytes("CLIENT" + i);
                 // Connect
-                client.Connect("tcp://127.0.0.1:5570");
+                requester.Connect(endpoint);
 
-                var poll = ZPollItem.CreateReceiver();
-
-                var requests = 0;
-                while (true)
+                for (int n = 0; n < 10; ++n)
                 {
-                    // Tick once per second, pulling in arriving messages
-                    ZError error;
-                    for (var centitick = 0; centitick < 100; ++centitick)
-                    {
-                        if (!client.PollIn(poll, out var incoming, out error, TimeSpan.FromMilliseconds(10)))
-                        {
-                            if (Equals(error, ZError.EAGAIN))
-                            {
-                                Thread.Sleep(1);
-                                continue;
-                            }
-                            if (Equals(error, ZError.ETERM))
-                                return;    // Interrupted
-                            throw new ZException(error);
-                        }
-                        using (incoming)
-                        {
-                            var messageText = incoming[0].ReadString();
-                            Console.WriteLine("[CLIENT{0}] {1}", centitick, messageText);
-                        }
-                    }
-                    using (var outgoing = new ZMessage())
-                    {
-                        outgoing.Add(new ZFrame(client.Identity));
-                        outgoing.Add(new ZFrame("request " + (++requests)));
+                    Thread.Sleep(1000);
+                    var requestText = "Hello";
 
-                        if (client.Send(outgoing, out error)) continue;
-                        if (Equals(error, ZError.ETERM))
-                            return;    // Interrupted
-                        throw new ZException(error);
+                    // Send
+                    requester.SendMore(new ZFrame());//这里需要模拟req的帧格式
+                    requester.Send(new ZFrame(requestText));
+
+                    // Receive
+                    using (var reply = requester.ReceiveMessage())
+                    {
+                        Console.WriteLine("==================HwClient1 receive==================");
+                        for (var i = 0; i < reply.Count; i++)
+                        {
+                            Console.WriteLine($"{i}:{reply[i].ReadString()}");
+                        }
+                        Console.WriteLine("==================HwClient1 receive==================");
                     }
                 }
             }
