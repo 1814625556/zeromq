@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OtherSocket
+namespace Ctest
 {
     class Program
     {
         static void Main(string[] args)
         {
-            DealerToDealer.Test();
-            //DealerRouterWorker.AsyncSrv();
-            //MTRelayClass.MTRelay(args);
-            Console.ReadKey(true);
+            var list = new List<string>(){"a","s","d","f"};
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+
         }
     }
 }

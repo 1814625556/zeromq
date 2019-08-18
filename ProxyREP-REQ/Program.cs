@@ -15,7 +15,8 @@ namespace ProxyREP_REQ
             //Dealer_REP.Demo();
             //ProxyDemo();
             //Router_Req.RTReq();
-            Router_Dealer.RTDealer();
+            //Router_Dealer.RTDealer();
+            
             Console.ReadKey();
         }
 

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxySubPub", "ProxySubPub\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtherSocket", "OtherSocket\OtherSocket.csproj", "{DFEBFEAD-299B-4EF5-900E-AC0B9D84DD89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ctest", "Ctest\Ctest.csproj", "{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{DFEBFEAD-299B-4EF5-900E-AC0B9D84DD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFEBFEAD-299B-4EF5-900E-AC0B9D84DD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFEBFEAD-299B-4EF5-900E-AC0B9D84DD89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE60E846-E43C-492A-AA25-8BB6B62BD1F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
